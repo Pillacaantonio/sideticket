@@ -1,0 +1,297 @@
+:host {
+  --ink: #0b2134;
+  --muted: #557186;
+  --aqua-dark: #087c8f;
+  display: block;
+  min-height: 100dvh;
+  color: var(--ink);
+}
+
+* { box-sizing: border-box; }
+
+.login-page {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  overflow: hidden;
+  padding: 32px 20px;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(89, 210, 210, 0.25), transparent 34%),
+    radial-gradient(circle at 84% 82%, rgba(29, 106, 159, 0.2), transparent 36%),
+    linear-gradient(145deg, #edf4f8 0%, #dfeef2 48%, #d6e8ee 100%);
+}
+
+.reference-watermark {
+  position: absolute;
+  z-index: -1;
+  inset: -8%;
+  background: url('/recursos/marca/marca-agua-sideticket.svg') center / min(74vw, 780px) auto no-repeat;
+  filter: saturate(0.82);
+  opacity: 0.12;
+  transform: rotate(-4deg) scale(1.02);
+  animation: watermark-float 10s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.ambient {
+  position: absolute;
+  z-index: -1;
+  border-radius: 999px;
+  filter: blur(16px);
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+.ambient-one {
+  top: -120px;
+  right: -90px;
+  width: 340px;
+  height: 340px;
+  background: rgba(112, 255, 238, 0.3);
+  animation: float-one 12s ease-in-out infinite alternate;
+}
+
+.ambient-two {
+  bottom: -170px;
+  left: -110px;
+  width: 430px;
+  height: 430px;
+  background: rgba(34, 105, 151, 0.3);
+  animation: float-two 15s ease-in-out infinite alternate;
+}
+
+.login-shell {
+  width: min(100%, 450px);
+  padding: 36px 42px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.66);
+  border-radius: 28px;
+  background: rgba(249, 253, 255, 0.78);
+  box-shadow: 0 32px 80px rgba(0, 20, 36, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(24px) saturate(125%);
+  animation: card-arrive 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.login-header { text-align: center; }
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: var(--aqua-dark);
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.75rem, 6vw, 2.15rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+.login-header > p:last-child {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.login-form { display: grid; gap: 19px; margin-top: 26px; }
+.field-group { display: grid; gap: 8px; }
+
+label,
+.label-row { color: #18364d; font-size: 0.82rem; font-weight: 650; }
+
+.label-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.label-row a {
+  color: #147b91;
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.label-row a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.input-control {
+  display: flex;
+  min-height: 50px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid #cfe0e8;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: inset 0 1px 2px rgba(10, 48, 69, 0.03);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.input-control:focus-within {
+  transform: translateY(-1px);
+  border-color: #35bfc2;
+  box-shadow: 0 0 0 4px rgba(53, 191, 194, 0.14);
+}
+
+.input-control.input-invalid { border-color: #d66c75; box-shadow: 0 0 0 3px rgba(214, 108, 117, 0.1); }
+
+.input-control > svg,
+.visibility-button svg,
+.submit-button svg {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.input-control > svg { color: #7190a2; }
+input { min-width: 0; }
+
+.input-control input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.input-control input::placeholder { color: #89a0af; }
+
+.visibility-button {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #59788b;
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.visibility-button:hover { background: #e7f5f5; color: #087c8f; }
+.field-error { color: #a94450; font-size: 0.72rem; }
+
+.remember-control {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 500;
+}
+
+.remember-control input { width: 16px; height: 16px; margin: 0; accent-color: #0f8194; }
+
+.submit-button {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(115deg, #0b5fa4, #087f91 70%, #0b9b9c);
+  box-shadow: 0 13px 30px rgba(7, 104, 129, 0.28);
+  color: #fff;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.submit-button:hover { transform: translateY(-2px); box-shadow: 0 17px 34px rgba(7, 104, 129, 0.34); filter: saturate(1.08); }
+.submit-button:active { transform: translateY(0); }
+.submit-button:disabled { cursor: wait; filter: saturate(0.7); opacity: 0.82; transform: none; }
+.submit-button svg { transition: transform 180ms ease; }
+.submit-button:hover svg { transform: translateX(3px); }
+
+.spinner {
+  width: 17px;
+  height: 17px;
+  border: 2px solid rgba(255, 255, 255, 0.42);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: girar 700ms linear infinite;
+}
+
+.form-message {
+  margin: -4px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.73rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.success-message { border: 1px solid #a7ded4; background: #e9f8f4; color: #216f67; }
+.error-message { border: 1px solid #e2b2b8; background: #fff0f2; color: #963c48; }
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 25px;
+  color: #6d8797;
+  font-size: 0.69rem;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #29bda7;
+  box-shadow: 0 0 0 4px rgba(41, 189, 167, 0.12);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible { outline: 3px solid rgba(59, 211, 207, 0.55); outline-offset: 3px; }
+
+@keyframes card-arrive {
+  from { transform: translateY(24px) scale(0.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes watermark-float {
+  from { transform: rotate(-4deg) translate3d(-10px, 7px, 0) scale(1.02); }
+  to { transform: rotate(-2deg) translate3d(15px, -9px, 0) scale(1.055); }
+}
+@keyframes float-one { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-70px, 65px, 0); } }
+@keyframes float-two { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(80px, -55px, 0); } }
+@keyframes girar { to { transform: rotate(360deg); } }
+
+@media (max-width: 560px) {
+  .login-page { align-items: center; padding: 18px 12px; }
+  .login-shell { padding: 30px 23px 24px; border-radius: 23px; }
+  .label-row { align-items: flex-start; }
+}
+
+@media (max-height: 760px) and (min-width: 561px) {
+  .login-shell { padding-top: 25px; padding-bottom: 20px; }
+  footer { display: none; }
+  .login-form { margin-top: 20px; gap: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

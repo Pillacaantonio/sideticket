@@ -1,0 +1,136 @@
+<main class="pagina-tickets" (click)="menuTicket.set(null)">
+  <header class="encabezado">
+    <div>
+      <span class="seccion">Centro de soporte</span>
+      <h1>Tickets</h1>
+      <p>Revisa las solicitudes de tus empresas y mantén cada atención bajo control.</p>
+    </div>
+    <button class="nuevo-ticket" type="button">+ Nuevo ticket</button>
+  </header>
+
+  <nav class="filtros" aria-label="Filtrar tickets por estado">
+    @for (item of filtros; track item) {
+      <button type="button" [class.activo]="filtro() === item" (click)="seleccionarFiltro(item)">
+        {{ etiquetaFiltro(item) }} <span>{{ cantidad(item) }}</span>
+      </button>
+    }
+  </nav>
+
+  <section class="contenedor-tabla">
+    @if (cargando()) {
+      <div class="estado-vacio"><span class="cargador"></span>Cargando tickets...</div>
+    } @else {
+      <div class="tabla-scroll">
+        <div class="fila cabecera">
+          <span>N.º</span><span>Ticket</span><span>Empresa</span><span>Prioridad</span><span>Estado</span><span>Acciones</span>
+        </div>
+        @for (ticket of ticketsFiltrados(); track ticket.id) {
+          <article class="fila">
+            <span class="numero"><i [class.visible]="ticket.sinLeer"></i>#{{ ticket.id }}</span>
+            <div class="detalle-ticket">
+              <strong>{{ ticket.titulo }}</strong>
+              <small>{{ ticket.categoria }} · {{ ticket.tipo }} · {{ ticket.antiguedad }}
+                @if (ticket.adjuntos) {
+                  <span class="adjuntos" title="Archivos adjuntos">
+                    <svg viewBox="0 0 24 24"><path d="m21.4 11.6-8.9 8.9a6 6 0 0 1-8.5-8.5l9.6-9.6a4 4 0 0 1 5.7 5.7l-9.6 9.6a2 2 0 1 1-2.8-2.8l8.9-8.9"/></svg>{{ ticket.adjuntos }}
+                  </span>
+                }
+              </small>
+            </div>
+            <span class="empresa">{{ ticket.empresa }}</span>
+            <span><b class="etiqueta prioridad" [attr.data-prioridad]="ticket.prioridad">{{ ticket.prioridad }}</b></span>
+            <span><b class="etiqueta estado" [attr.data-estado]="ticket.estado">{{ ticket.estado }}</b></span>
+            <div class="acciones">
+              <button class="responder" type="button" (click)="$event.stopPropagation(); abrirRespuesta(ticket)">Responder</button>
+              <div class="menu-contenedor">
+                <button class="mas" type="button" aria-label="Más opciones" [attr.aria-expanded]="menuTicket() === ticket.id" (click)="$event.stopPropagation(); alternarMenu(ticket.id)">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+                </button>
+                @if (menuTicket() === ticket.id) {
+                  <div class="menu-estado" (click)="$event.stopPropagation()">
+                    <span>Cambiar estado a</span>
+                    @for (estado of estados; track estado) {
+                      <button type="button" (click)="cambiarEstado(ticket, estado)">
+                        <i [attr.data-estado]="estado"></i>{{ estado }}
+                        @if (ticket.estado === estado) { <b>✓</b> }
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </article>
+        } @empty {
+          <div class="estado-vacio">No hay tickets en este estado.</div>
+        }
+      </div>
+    }
+  </section>
+</main>
+
+@if (ticketRespuesta()) {
+  <div class="modal-fondo">
+    <section class="modal modal-ticket" role="dialog" aria-modal="true" aria-labelledby="titulo-respuesta">
+      <header class="cabecera-modal-ticket">
+        <div>
+          <h2 id="titulo-respuesta">#{{ ticketRespuesta()?.id }} · {{ ticketRespuesta()?.titulo }}</h2>
+          <div class="metadatos-modal">
+            <b class="etiqueta prioridad" [attr.data-prioridad]="ticketRespuesta()?.prioridad">{{ ticketRespuesta()?.prioridad }}</b>
+            <b class="etiqueta estado" [attr.data-estado]="ticketRespuesta()?.estado">{{ ticketRespuesta()?.estado }}</b>
+            <span>{{ ticketRespuesta()?.empresa }} · {{ ticketRespuesta()?.categoria }} · {{ ticketRespuesta()?.tipo }} · {{ ticketRespuesta()?.antiguedad }}</span>
+          </div>
+        </div>
+        <button type="button" aria-label="Cerrar" (click)="cerrarRespuesta()">×</button>
+      </header>
+      <div class="cuerpo-modal cuerpo-ticket">
+        <div class="controles-ticket">
+          <label>Estado
+            <select [(ngModel)]="estadoSeleccionado">
+              @for (estado of estados; track estado) { <option [ngValue]="estado">{{ estado }}</option> }
+            </select>
+          </label>
+          <label>Prioridad
+            <select [(ngModel)]="prioridadSeleccionada">
+              <option [ngValue]="'Alta'">Alta</option><option [ngValue]="'Media'">Media</option><option [ngValue]="'Baja'">Baja</option>
+            </select>
+          </label>
+          <label>Asignado a
+            <select [(ngModel)]="asignadoA">
+              <option value="">Sin asignar</option><option value="soporte">Equipo de soporte</option><option value="admin">Administrador</option>
+            </select>
+          </label>
+        </div>
+
+        <section class="mensaje-cliente">
+          <span>{{ ticketRespuesta()?.empresa }}</span>
+          <p>{{ ticketRespuesta()?.descripcion }}</p>
+          @if (ticketRespuesta()?.archivos?.length) {
+            <div class="archivos">
+              @for (archivo of ticketRespuesta()?.archivos; track archivo) {
+                <button type="button"><svg viewBox="0 0 24 24"><path d="M4 4h10l6 6v10H4V4Zm10 0v6h6"/></svg><span>{{ archivo }}</span></button>
+              }
+            </div>
+          }
+        </section>
+
+        @if (ticketRespuesta()?.ultimaRespuesta) {
+          <section class="mensaje-soporte">
+            <strong>Soporte · hace 5 min</strong>
+            <p>{{ ticketRespuesta()?.ultimaRespuesta }}</p>
+          </section>
+        }
+
+        <label class="campo-respuesta" for="respuesta-ticket">Responder al cliente</label>
+        <textarea id="respuesta-ticket" rows="5" maxlength="1500" [(ngModel)]="respuesta" placeholder="Escribe tu respuesta..."></textarea>
+        <div class="respuestas-rapidas">
+          <button type="button" (click)="usarRespuestaRapida('Ya lo estamos revisando.')">Ya lo estamos revisando</button>
+          <button type="button" (click)="usarRespuestaRapida('Quedó solucionado, por favor confirma.')">Quedó solucionado, confirma</button>
+        </div>
+        <div class="acciones-modal acciones-ticket">
+          <button class="nota-interna" type="button" (click)="registrarNotaInterna()">Nota interna</button>
+          <button class="enviar" type="button" [disabled]="guardandoRespuesta()" (click)="enviarRespuesta()">{{ guardandoRespuesta() ? 'Enviando...' : 'Enviar respuesta' }}</button>
+        </div>
+      </div>
+    </section>
+  </div>
+}

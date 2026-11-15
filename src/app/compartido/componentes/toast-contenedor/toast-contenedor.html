@@ -1,0 +1,17 @@
+<div class="contenedor" aria-live="polite" aria-atomic="false">
+  @for (toast of toastServicio.notificaciones(); track toast.id) {
+    <article class="toast" [class]="'toast ' + toast.tipo" role="status">
+      <span class="icono">
+        @switch (toast.tipo) {
+          @case ('exito') { ✓ }
+          @case ('error') { ! }
+          @case ('aviso') { ! }
+          @default { i }
+        }
+      </span>
+      <p>{{ toast.mensaje }}</p>
+      <button type="button" (click)="toastServicio.cerrar(toast.id)" aria-label="Cerrar notificación">×</button>
+      <i></i>
+    </article>
+  }
+</div>

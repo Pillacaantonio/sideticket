@@ -1,0 +1,19 @@
+:host { display: block; }
+.cabecera { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 28px; border: 1px solid rgba(255,255,255,.75); border-radius: 22px; background: rgba(255,255,255,.78); box-shadow: 0 15px 42px rgba(18,58,76,.09); backdrop-filter: blur(18px); }
+.identidad, .acciones, .usuario { display: flex; align-items: center; }
+.identidad { gap: 18px; }
+.identidad app-marca { transform: scale(.62); transform-origin: left center; width: 60px; height: 48px; }
+.separador { width: 1px; height: 34px; background: #cbdde5; }
+.identidad div { display: grid; gap: 2px; }
+.etiqueta, small { color: #718b9a; font-size: .68rem; }
+.identidad strong { color: #102e43; font-size: .94rem; }
+.acciones { gap: 18px; }
+.usuario { gap: 9px; }
+.usuario div { display: grid; gap: 2px; }
+.usuario strong { color: #17364a; font-size: .78rem; }
+.avatar { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 12px; background: linear-gradient(145deg,#0b66a6,#119598); color: #fff; font-size: .82rem; font-weight: 800; }
+button { min-height: 38px; padding: 0 15px; border: 1px solid #c9dde5; border-radius: 11px; background: rgba(255,255,255,.7); color: #34586c; font: inherit; font-size: .75rem; font-weight: 700; cursor: pointer; }
+button:hover { border-color: #72b9c2; color: #087c8f; }
+button:disabled { cursor: wait; opacity: .65; }
+@media (max-width: 700px) { .cabecera { align-items: flex-start; padding: 16px; } .usuario div { display: none; } .separador { display: none; } .identidad { gap: 7px; } .acciones { gap: 8px; } }
+@media (max-width: 480px) { .identidad app-marca { display: none; } button { padding: 0 10px; } }

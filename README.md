@@ -1,5 +1,29 @@
 # SIDETICKET
 
+Aplicación web de SIDETICKET desarrollada con Angular.
+
+## Conexión con SIDE-API
+
+El inicio de sesión consume el backend ubicado en `D:\SIDE\BACKEND-SIDE\SIDE-API`.
+
+- API local: `https://localhost:44320`
+- Endpoint: `POST /api/v1/SideTicket/Autenticacion/IniciarSesion`
+- Frontend: `http://localhost:4200`
+
+Ejecuta primero el backend:
+
+```powershell
+dotnet run --project D:\SIDE\BACKEND-SIDE\SIDE-API\WebApi\WebApi.csproj --launch-profile https
+```
+
+Luego inicia el frontend:
+
+```powershell
+npm start
+```
+
+La URL base se configura en `src/app/nucleo/configuracion/api.configuracion.ts`.
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.5.
 
 ## Development server

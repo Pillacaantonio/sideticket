@@ -1,0 +1,10 @@
+<footer class="paginacion" aria-label="Paginación">
+  <span>Mostrando {{ desde() }}–{{ hasta() }} de {{ total() }}</span>
+  <nav>
+    <button type="button" (click)="irA(pagina() - 1)" [disabled]="pagina() === 1" aria-label="Página anterior">‹</button>
+    @for (numero of paginas(); track numero) {
+      <button type="button" (click)="irA(numero)" [class.activa]="numero === pagina()">{{ numero }}</button>
+    }
+    <button type="button" (click)="irA(pagina() + 1)" [disabled]="pagina() === totalPaginas()" aria-label="Página siguiente">›</button>
+  </nav>
+</footer>

@@ -1,0 +1,83 @@
+<main class="panel">
+  <header class="encabezado">
+    <div><h1>Panel general</h1><p>Bienvenido. Este es el resumen de SIDETICKET de hoy.</p></div>
+    <button type="button">Descargar reporte</button>
+  </header>
+
+  <section class="indicadores" aria-label="Indicadores principales">
+    <article class="indicador">
+      <span class="icono turquesa"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M19 8v6M22 11h-6"/></svg></span>
+      <div><small>Usuarios activos</small><strong>248</strong><p><b>↑ 12.5%</b> vs. mes anterior</p></div>
+    </article>
+    <article class="indicador">
+      <span class="icono azul"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M14 9h1M9 13h1M14 13h1"/></svg></span>
+      <div><small>Empresas</small><strong>36</strong><p><b>↑ 8.1%</b> vs. mes anterior</p></div>
+    </article>
+    <article class="indicador">
+      <span class="icono violeta"><svg viewBox="0 0 24 24"><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7M12 3v13M7 8l5-5 5 5"/></svg></span>
+      <div><small>Tickets abiertos</small><strong>84</strong><p class="negativo"><b>↓ 6.4%</b> esta semana</p></div>
+    </article>
+    <article class="indicador">
+      <span class="icono celeste"><svg viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-9M15 6h6v6"/></svg></span>
+      <div><small>Tickets resueltos</small><strong>1,284</strong><p><b>↑ 10.2%</b> esta semana</p></div>
+    </article>
+  </section>
+
+  <section class="fila-principal">
+    <article class="tarjeta grafico-principal">
+      <div class="titulo-tarjeta"><div><h2>Actividad de tickets</h2><p>Solicitudes recibidas durante los últimos 7 días</p></div><button type="button">Esta semana⌄</button></div>
+      <div class="resumen-grafico"><strong>1,284</strong><span>↑ 10.2%</span><small>vs. semana anterior</small></div>
+      <div class="grafico-linea">
+        <span class="eje y1">300</span><span class="eje y2">200</span><span class="eje y3">100</span><span class="eje y4">0</span>
+        <svg viewBox="0 0 700 240" preserveAspectRatio="none" role="img" aria-label="Gráfico de actividad semanal">
+          <defs><linearGradient id="areaTurquesa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16b9b0" stop-opacity=".27"/><stop offset="1" stop-color="#16b9b0" stop-opacity="0"/></linearGradient></defs>
+          <g class="rejilla"><path d="M0 35H700M0 95H700M0 155H700M0 215H700"/></g>
+          <path class="area" d="M0 195C45 180 40 130 90 142S135 82 185 102s55 67 105 40 60-84 115-48 55 76 108 40 63-24 96-44 48-62 91-72V240H0Z"/>
+          <path class="linea" d="M0 195C45 180 40 130 90 142S135 82 185 102s55 67 105 40 60-84 115-48 55 76 108 40 63-24 96-44 48-62 91-72"/>
+          <circle cx="405" cy="94" r="6"/><circle class="centro" cx="405" cy="94" r="3"/>
+        </svg>
+        <div class="globo"><small>Miércoles</small><strong>218 tickets</strong></div>
+        <div class="dias"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span></div>
+      </div>
+    </article>
+
+    <article class="tarjeta distribucion">
+      <div class="titulo-tarjeta"><div><h2>Distribución</h2><p>Tickets por estado</p></div><button type="button">•••</button></div>
+      <div class="dona"><div><strong>1,284</strong><span>Total</span></div></div>
+      <ul>
+        <li><i class="punto p1"></i><span>Resueltos</span><strong>48%</strong></li>
+        <li><i class="punto p2"></i><span>En proceso</span><strong>27%</strong></li>
+        <li><i class="punto p3"></i><span>Pendientes</span><strong>17%</strong></li>
+        <li><i class="punto p4"></i><span>Vencidos</span><strong>8%</strong></li>
+      </ul>
+    </article>
+
+    <article class="tarjeta actividad">
+      <div class="titulo-tarjeta"><div><h2>Actividad reciente</h2><p>Últimos movimientos</p></div><button type="button">Ver todo</button></div>
+      <ol>
+        <li><span class="mini m1">TK</span><div><strong>Ticket #1842 asignado</strong><small>Soporte técnico · hace 8 min</small></div><b>Alta</b></li>
+        <li><span class="mini m2">EM</span><div><strong>Nueva empresa registrada</strong><small>Grupo Litoral · hace 24 min</small></div></li>
+        <li><span class="mini m3">US</span><div><strong>Usuario activado</strong><small>m.rojas · hace 42 min</small></div></li>
+        <li><span class="mini m4">OK</span><div><strong>Ticket #1837 resuelto</strong><small>Incidencia de acceso · hace 1 h</small></div></li>
+      </ol>
+    </article>
+  </section>
+
+  <section class="fila-inferior">
+    <article class="tarjeta empresas-recientes">
+      <div class="titulo-tarjeta"><div><h2>Empresas recientes</h2><p>Altas más recientes en la plataforma</p></div><button type="button">Ver empresas</button></div>
+      <div class="tabla-mini">
+        <div><span class="empresa e1">GL</span><strong>Grupo Litoral</strong><small>24 usuarios</small><b>Activa</b></div>
+        <div><span class="empresa e2">NS</span><strong>Nexo Servicios</strong><small>18 usuarios</small><b>Activa</b></div>
+        <div><span class="empresa e3">AV</span><strong>Andes Verde</strong><small>11 usuarios</small><b>Prueba</b></div>
+      </div>
+    </article>
+    <article class="tarjeta barras">
+      <div class="titulo-tarjeta"><div><h2>Rendimiento</h2><p>Tickets resueltos y pendientes</p></div><button type="button">7 días⌄</button></div>
+      <div class="leyenda"><span><i class="resuelto"></i>Resueltos</span><span><i class="pendiente"></i>Pendientes</span></div>
+      <div class="grafico-barras">
+        <div><i style="--a:58%;--b:18%"></i><span>Lun</span></div><div><i style="--a:42%;--b:24%"></i><span>Mar</span></div><div><i style="--a:76%;--b:31%"></i><span>Mié</span></div><div><i style="--a:35%;--b:17%"></i><span>Jue</span></div><div><i style="--a:68%;--b:28%"></i><span>Vie</span></div><div><i style="--a:51%;--b:15%"></i><span>Sáb</span></div><div><i style="--a:71%;--b:22%"></i><span>Dom</span></div>
+      </div>
+    </article>
+  </section>
+</main>

@@ -1,0 +1,108 @@
+<main class="pagina">
+  <header>
+    <div><h1>Usuarios</h1><p>Administra accesos, roles y estado de las cuentas.</p></div>
+    <button type="button" (click)="abrirCrear()">+ Nuevo usuario</button>
+  </header>
+
+  <section class="resumen">
+    <article><span>Total</span><strong>{{ usuarios().length }}</strong></article>
+    <article><span>Administradores</span><strong>{{ administradores() }}</strong></article>
+    <article><span>Usuarios activos</span><strong>{{ usuariosActivos() }}</strong></article>
+  </section>
+
+  <section class="tabla">
+    <div class="herramientas">
+      <div class="buscador">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input type="search" placeholder="Buscar usuario, rol o estado..." (input)="buscar($event)" />
+      </div>
+      <button type="button" (click)="cargarUsuarios()">Actualizar</button>
+    </div>
+
+    @if (cargando()) {
+      <div class="estado-tabla"><span class="cargador"></span>Cargando usuarios...</div>
+    } @else {
+      <div class="tabla-scroll">
+        <div class="fila cabecera"><span>Acciones</span><span>Usuario</span><span>Empresa</span><span>Rol</span><span>Estado</span><span>Registro</span></div>
+        @for (usuario of usuariosPaginados(); track usuario.id) {
+          <div class="fila">
+            <span class="acciones-fila">
+              <button class="editar" type="button" (click)="abrirEditar(usuario)" title="Modificar usuario" aria-label="Modificar usuario">
+                <svg viewBox="0 0 24 24"><path d="m4 16-1 5 5-1L19 9l-4-4L4 16ZM13 7l4 4"/></svg>
+              </button>
+              <button class="eliminar" type="button" (click)="confirmarEliminar(usuario)" title="Eliminar usuario" aria-label="Eliminar usuario">
+                <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"/></svg>
+              </button>
+            </span>
+            <span class="nombre"><strong>{{ usuario.usuario }}</strong></span>
+            <span class="empresa-usuario">{{ usuario.empresa || 'Sin empresa' }}</span>
+            <span><b class="rol" [class.admin]="usuario.tipoUsuario">{{ usuario.tipoUsuario ? 'Administrador' : 'Usuario' }}</b></span>
+            <span><b class="estado-cuenta" [class.inactivo]="!usuario.isActive">{{ usuario.isActive ? 'Activo' : 'Inactivo' }}</b></span>
+            <span>{{ usuario.fechaCrea | date:'dd/MM/yyyy' }}</span>
+          </div>
+        } @empty {
+          <div class="estado-tabla">No se encontraron usuarios.</div>
+        }
+      </div>
+      <app-paginacion [total]="usuariosFiltrados().length" [pagina]="pagina()" [porPagina]="elementosPorPagina" (paginaCambiada)="pagina.set($event)" />
+    }
+  </section>
+</main>
+
+@if (formularioVisible()) {
+  <div class="modal-fondo" role="presentation">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="titulo-formulario-usuario">
+      <header>
+        <div><span>{{ usuarioEdicion() ? 'Editar cuenta' : 'Nueva cuenta' }}</span><h2 id="titulo-formulario-usuario">{{ usuarioEdicion() ? 'Modificar usuario' : 'Crear usuario' }}</h2></div>
+        <button type="button" (click)="cerrarFormulario()" aria-label="Cerrar">×</button>
+      </header>
+      <form [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+        <label>Nombre de usuario
+          <input type="text" maxlength="40" formControlName="usuario" placeholder="Nombre para iniciar sesión" autocomplete="off" />
+          @if (formulario.controls.usuario.touched && formulario.controls.usuario.invalid) { <small>Ingresa entre 3 y 40 caracteres.</small> }
+        </label>
+        <label>Tipo de usuario
+          <select formControlName="tipoUsuario">
+            <option [ngValue]="false">Usuario</option>
+            <option [ngValue]="true">Administrador</option>
+          </select>
+        </label>
+        <label>Empresa
+          <select formControlName="idEmpresa">
+            <option [ngValue]="0" disabled>Selecciona una empresa</option>
+            @for (empresa of empresas(); track empresa.id) {
+              <option [ngValue]="empresa.id">{{ empresa.sRazonSocial }}</option>
+            }
+          </select>
+          @if (formulario.controls.idEmpresa.touched && formulario.controls.idEmpresa.invalid) { <small>Selecciona la empresa a la que pertenece el usuario.</small> }
+        </label>
+        <label>{{ usuarioEdicion() ? 'Nueva contraseña temporal (opcional)' : 'Contraseña temporal' }}
+          <span class="campo-contrasena">
+            <input [type]="contrasenaVisible() ? 'text' : 'password'" maxlength="128" formControlName="contrasenaTemporal" [placeholder]="usuarioEdicion() ? 'Déjala vacía para conservar la actual' : 'Ingresa una contraseña'" autocomplete="new-password" />
+            <button type="button" (click)="alternarContrasena()" [attr.aria-label]="contrasenaVisible() ? 'Ocultar contraseña' : 'Mostrar contraseña'" [title]="contrasenaVisible() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+              @if (contrasenaVisible()) {
+                <svg viewBox="0 0 24 24"><path d="m3 3 18 18M10.6 10.7a2 2 0 0 0 2.7 2.7M9.9 4.2A10.5 10.5 0 0 1 12 4c5.4 0 9 5.5 9 5.5a16 16 0 0 1-2.1 2.6M6.2 6.2C4.2 7.5 3 9.5 3 9.5S6.6 15 12 15c.8 0 1.6-.1 2.3-.3"/></svg>
+              } @else {
+                <svg viewBox="0 0 24 24"><path d="M3 12s3.6-5.5 9-5.5 9 5.5 9 5.5-3.6 5.5-9 5.5S3 12 3 12Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+              }
+            </button>
+          </span>
+          @if (formulario.controls.contrasenaTemporal.touched && formulario.controls.contrasenaTemporal.invalid) { <small>{{ usuarioEdicion() ? 'La contraseña no puede superar 128 caracteres.' : 'La contraseña temporal es obligatoria.' }}</small> }
+        </label>
+        <p class="nota">{{ usuarioEdicion() ? 'Si dejas este campo vacío, la contraseña actual se conservará.' : 'El usuario podrá iniciar sesión con esta contraseña temporal.' }}</p>
+        <div class="acciones-modal"><button class="secundario" type="button" (click)="cerrarFormulario()">Cancelar</button><button class="primario" type="submit" [disabled]="guardando()">{{ guardando() ? 'Guardando...' : usuarioEdicion() ? 'Guardar cambios' : 'Crear usuario' }}</button></div>
+      </form>
+    </section>
+  </div>
+}
+
+@if (usuarioEliminar()) {
+  <div class="modal-fondo" role="presentation">
+    <section class="modal confirmacion" role="alertdialog" aria-modal="true" aria-labelledby="titulo-eliminar-usuario">
+      <span class="icono-alerta">!</span>
+      <h2 id="titulo-eliminar-usuario">¿Deseas eliminar este usuario?</h2>
+      <p>Se eliminará la cuenta <strong>{{ usuarioEliminar()?.usuario }}</strong> y ya no aparecerá en el listado. La operación solo se realizará cuando confirmes.</p>
+      <div class="acciones-modal"><button class="secundario" type="button" (click)="cancelarEliminar()">Cancelar</button><button class="peligro" type="button" (click)="eliminar()" [disabled]="eliminando()">{{ eliminando() ? 'Eliminando...' : 'Sí, eliminar' }}</button></div>
+    </section>
+  </div>
+}

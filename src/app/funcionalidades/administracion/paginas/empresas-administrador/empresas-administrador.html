@@ -1,0 +1,75 @@
+<main class="pagina">
+  <header>
+    <div><h1>Empresas</h1><p>Administra las empresas registradas dentro de SIDETICKET.</p></div>
+    <button type="button" (click)="abrirCrear()">+ Nueva empresa</button>
+  </header>
+
+  <section class="resumen">
+    <article><span>Total</span><strong>{{ empresas().length }}</strong></article>
+    <article><span>Empresas activas</span><strong>{{ empresasActivas() }}</strong></article>
+    <article><span>Resultados visibles</span><strong>{{ empresasFiltradas().length }}</strong></article>
+  </section>
+
+  <section class="tabla">
+    <div class="herramientas">
+      <div class="buscador">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input type="search" placeholder="Buscar empresa, RUC o dirección..." (input)="buscar($event)" />
+      </div>
+      <button type="button" (click)="cargarEmpresas()">Actualizar</button>
+    </div>
+
+    @if (cargando()) {
+      <div class="estado-tabla"><span class="cargador"></span>Cargando empresas...</div>
+    } @else {
+      <div class="tabla-scroll">
+        <div class="fila cabecera"><span>Acciones</span><span>Empresa</span><span>RUC</span><span>Dirección</span><span>Estado</span><span>Registro</span></div>
+        @for (empresa of empresasPaginadas(); track empresa.id) {
+          <div class="fila">
+            <span class="acciones-fila">
+              <button class="editar" type="button" (click)="abrirEditar(empresa)" title="Modificar empresa" aria-label="Modificar empresa">
+                <svg viewBox="0 0 24 24"><path d="m4 16-1 5 5-1L19 9l-4-4L4 16ZM13 7l4 4"/></svg>
+              </button>
+              <button class="eliminar" type="button" (click)="confirmarEliminar(empresa)" title="Eliminar empresa" aria-label="Eliminar empresa">
+                <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14M10 11v6M14 11v6"/></svg>
+              </button>
+            </span>
+            <span class="nombre"><strong>{{ empresa.sRazonSocial }}</strong></span>
+            <span>{{ empresa.sRucEmpresa }}</span>
+            <span class="direccion">{{ empresa.sDireccion || 'Sin dirección' }}</span>
+            <span><b class="estado-cuenta" [class.inactivo]="!empresa.flagEstado">{{ empresa.flagEstado ? 'Activa' : 'Inactiva' }}</b></span>
+            <span>{{ empresa.dFechaCrea | date:'dd/MM/yyyy' }}</span>
+          </div>
+        } @empty {
+          <div class="estado-tabla">No se encontraron empresas.</div>
+        }
+      </div>
+      <app-paginacion [total]="empresasFiltradas().length" [pagina]="pagina()" [porPagina]="elementosPorPagina" (paginaCambiada)="pagina.set($event)" />
+    }
+  </section>
+</main>
+
+@if (formularioVisible()) {
+  <div class="modal-fondo" role="presentation">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="titulo-formulario">
+      <header><div><span>{{ empresaEdicion() ? 'Editar registro' : 'Nuevo registro' }}</span><h2 id="titulo-formulario">{{ empresaEdicion() ? 'Modificar empresa' : 'Crear empresa' }}</h2></div><button type="button" (click)="cerrarFormulario()" aria-label="Cerrar">×</button></header>
+      <form [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+        <label>RUC de la empresa<input type="text" inputmode="numeric" maxlength="11" formControlName="rucEmpresa" placeholder="20123456789" />@if (formulario.controls.rucEmpresa.touched && formulario.controls.rucEmpresa.invalid) { <small>Ingresa un RUC válido de 11 dígitos.</small> }</label>
+        <label>Razón social<input type="text" maxlength="100" formControlName="razonSocial" placeholder="Nombre legal de la empresa" />@if (formulario.controls.razonSocial.touched && formulario.controls.razonSocial.invalid) { <small>Ingresa una razón social de al menos 2 caracteres.</small> }</label>
+        <label>Dirección <em>Opcional</em><textarea rows="3" maxlength="100" formControlName="direccion" placeholder="Dirección fiscal o principal"></textarea></label>
+        <div class="acciones-modal"><button class="secundario" type="button" (click)="cerrarFormulario()">Cancelar</button><button class="primario" type="submit" [disabled]="guardando()">{{ guardando() ? 'Guardando...' : empresaEdicion() ? 'Guardar cambios' : 'Crear empresa' }}</button></div>
+      </form>
+    </section>
+  </div>
+}
+
+@if (empresaEliminar()) {
+  <div class="modal-fondo" role="presentation">
+    <section class="modal confirmacion" role="alertdialog" aria-modal="true" aria-labelledby="titulo-eliminar">
+      <span class="icono-alerta">!</span>
+      <h2 id="titulo-eliminar">¿Deseas eliminar esta empresa?</h2>
+      <p>Se eliminará <strong>{{ empresaEliminar()?.sRazonSocial }}</strong>. La operación solo se realizará cuando confirmes.</p>
+      <div class="acciones-modal"><button class="secundario" type="button" (click)="cancelarEliminar()">Cancelar</button><button class="peligro" type="button" (click)="eliminar()" [disabled]="eliminando()">{{ eliminando() ? 'Eliminando...' : 'Sí, eliminar' }}</button></div>
+    </section>
+  </div>
+}

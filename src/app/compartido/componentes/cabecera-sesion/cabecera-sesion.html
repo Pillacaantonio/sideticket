@@ -1,0 +1,20 @@
+<header class="cabecera">
+  <div class="identidad">
+    <app-marca />
+    <span class="separador" aria-hidden="true"></span>
+    <div>
+      <span class="etiqueta">Panel</span>
+      <strong>{{ seccion() }}</strong>
+    </div>
+  </div>
+
+  <div class="acciones">
+    <div class="usuario">
+      <span class="avatar" aria-hidden="true">{{ usuario.charAt(0).toUpperCase() }}</span>
+      <div><small>Sesión activa</small><strong>{{ usuario }}</strong></div>
+    </div>
+    <button type="button" (click)="cerrarSesion()" [disabled]="cerrando()">
+      {{ cerrando() ? 'Cerrando...' : 'Cerrar sesión' }}
+    </button>
+  </div>
+</header>

@@ -1,0 +1,66 @@
+<div class="administracion" [class.menu-visible]="menuAbierto()">
+  <button class="boton-menu" type="button" (click)="alternarMenu()" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+
+  <aside class="barra-lateral">
+    <a class="marca-panel" routerLink="/administrador/panel" (click)="cerrarMenu()">
+      <app-marca />
+    </a>
+
+    <nav aria-label="Navegación administrativa">
+      <span class="titulo-menu">Administración</span>
+      <a routerLink="/administrador/panel" routerLinkActive="activo" (click)="cerrarMenu()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z" /></svg>
+        <span>Panel</span>
+      </a>
+      <a routerLink="/administrador/usuarios" routerLinkActive="activo" (click)="cerrarMenu()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+        <span>Usuarios</span>
+      </a>
+      <a routerLink="/administrador/empresas" routerLinkActive="activo" (click)="cerrarMenu()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M14 9h1M9 13h1M14 13h1M9 17h1M14 17h1" /></svg>
+        <span>Empresas</span>
+      </a>
+      <a routerLink="/administrador/tickets" routerLinkActive="activo" (click)="cerrarMenu()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v5a2 2 0 0 0 0 4v5H4v-5a2 2 0 0 0 0-4V5ZM9 5v14" /></svg>
+        <span>Tickets</span>
+      </a>
+    </nav>
+
+    <div class="tarjeta-ayuda">
+
+    </div>
+
+    <div class="perfil">
+      <span class="avatar">{{ inicial }}</span>
+      <div><strong>{{ usuario }}</strong><small>Administrador</small></div>
+      <button type="button" (click)="cerrarSesion()" [disabled]="cerrando()" aria-label="Cerrar sesión">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" /></svg>
+      </button>
+    </div>
+  </aside>
+
+  <button class="velo" type="button" (click)="cerrarMenu()" aria-label="Cerrar menú"></button>
+
+  <div class="contenido-principal">
+    <header class="barra-superior">
+      <div class="buscador">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input type="search" placeholder="Buscar en SIDETICKET..." aria-label="Buscar" />
+      </div>
+      <div class="acciones-superiores">
+        <button class="boton-icono" type="button" aria-label="Notificaciones">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <span></span>
+        </button>
+        <div class="fecha">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+          <span>Esta semana</span>
+        </div>
+      </div>
+    </header>
+
+    <router-outlet />
+  </div>
+</div>
